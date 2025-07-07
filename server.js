@@ -6,8 +6,6 @@ import { Agent } from "https"; // To force IPv4 if needed
 const app = express();
 const PORT = 3000;
 
-const url =
-  "https://api.themoviedb.org/3/movie/now_playing?page=1";
 const options = {
   method: "GET",
   headers: {
@@ -25,8 +23,24 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/now-playing", async (req, res) => {
+  const url_now_playing = "https://api.themoviedb.org/3/movie/now_playing?page=1";
+
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url_now_playing, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
+
+app.get("/movie", async (req, res) => {
+  const { movieID } = req.query;
+  const url_MovieId = `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`;
+  
+  try {
+    const response = await fetch(url_MovieId, options);
     const data = await response.json();
     res.json(data);
   } catch (err) {
