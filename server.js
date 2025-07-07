@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 
 const url =
-  "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1";
+  "https://api.themoviedb.org/3/movie/now_playing?page=1";
 const options = {
   method: "GET",
   headers: {
