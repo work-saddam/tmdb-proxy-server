@@ -34,6 +34,18 @@ app.get("/now-playing", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch data from TMDB" });
   }
 });
+app.get("/popular", async (req, res) => {
+  const url_now_playing = "https://api.themoviedb.org/3/movie/popular";
+
+  try {
+    const response = await fetch(url_now_playing, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
 
 app.get("/movie", async (req, res) => {
   const { movieID } = req.query;
