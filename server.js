@@ -59,6 +59,18 @@ app.get("/top-rated", async (req, res) => {
   }
 });
 
+app.get("/upcoming", async (req, res) => {
+  const url_upcoming= "https://api.themoviedb.org/3/movie/upcoming";
+  try {
+    const response = await fetch(url_upcoming, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
+
 app.get("/movie", async (req, res) => {
   const { movieID } = req.query;
   const url_MovieId = `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`;
