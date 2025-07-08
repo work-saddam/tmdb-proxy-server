@@ -23,8 +23,8 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/now-playing", async (req, res) => {
-  const url_now_playing = "https://api.themoviedb.org/3/movie/now_playing?page=1";
-
+  const url_now_playing =
+    "https://api.themoviedb.org/3/movie/now_playing?page=1";
   try {
     const response = await fetch(url_now_playing, options);
     const data = await response.json();
@@ -34,11 +34,23 @@ app.get("/now-playing", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch data from TMDB" });
   }
 });
-app.get("/popular", async (req, res) => {
-  const url_now_playing = "https://api.themoviedb.org/3/movie/popular";
 
+app.get("/popular", async (req, res) => {
+  const url_popular= "https://api.themoviedb.org/3/movie/popular";
   try {
-    const response = await fetch(url_now_playing, options);
+    const response = await fetch(url_popular, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
+
+app.get("/top-rated", async (req, res) => {
+  const url_top_rated = "https://api.themoviedb.org/3/movie/top_rated";
+  try {
+    const response = await fetch(url_top_rated, options);
     const data = await response.json();
     res.json(data);
   } catch (err) {
@@ -50,7 +62,6 @@ app.get("/popular", async (req, res) => {
 app.get("/movie", async (req, res) => {
   const { movieID } = req.query;
   const url_MovieId = `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`;
-  
   try {
     const response = await fetch(url_MovieId, options);
     const data = await response.json();
