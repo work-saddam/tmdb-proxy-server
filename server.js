@@ -84,6 +84,19 @@ app.get("/movie", async (req, res) => {
   }
 });
 
+app.get("/search", async (req, res) => {
+  const { movieName } = req.query;
+  const url_MovieName = `https://api.themoviedb.org/3/search/movie?query=${movieName}&include_adult=false&language=en-US&page=1`;
+  try {
+    const response = await fetch(url_MovieName, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
