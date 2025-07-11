@@ -1,9 +1,11 @@
 // server.js
 import express from "express";
+import cors from "cors"
 import fetch from "node-fetch";
 import { Agent } from "https"; // To force IPv4 if needed
 
 const app = express();
+app.use(cors())
 const PORT = 3000;
 
 const options = {
@@ -71,6 +73,7 @@ app.get("/upcoming", async (req, res) => {
   }
 });
 
+// https://tmdb-proxy-server-w1ng.onrender.com/movie?movieID=${movieId}
 app.get("/movie", async (req, res) => {
   const { movieID } = req.query;
   const url_MovieId = `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`;
@@ -84,6 +87,7 @@ app.get("/movie", async (req, res) => {
   }
 });
 
+// https://tmdb-proxy-server-w1ng.onrender.com/search?movieName=${movieName}
 app.get("/search", async (req, res) => {
   const { movieName } = req.query;
   const url_MovieName = `https://api.themoviedb.org/3/search/movie?query=${movieName}&include_adult=false&language=en-US&page=1`;
