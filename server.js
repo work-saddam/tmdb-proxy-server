@@ -101,6 +101,20 @@ app.get("/movieDetail", async (req, res) => {
   }
 });
 
+// https://tmdb-proxy-server-w1ng.onrender.com/similarMovies/?movieID=${movieId}
+app.get("/similarMovies", async (req, res) => {
+  const { movieID } = req.query;
+  const url_similarMovies = `https://api.themoviedb.org/3/movie/${movieID}/similar`;
+  try {
+    const response = await fetch(url_similarMovies, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
+
 // https://tmdb-proxy-server-w1ng.onrender.com/search?movieName=${movieName}
 app.get("/search", async (req, res) => {
   const { movieName } = req.query;
