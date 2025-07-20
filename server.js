@@ -1,11 +1,11 @@
 // server.js
 import express from "express";
-import cors from "cors"
+import cors from "cors";
 import fetch from "node-fetch";
 import { Agent } from "https"; // To force IPv4 if needed
 
 const app = express();
-app.use(cors())
+app.use(cors());
 const PORT = 3000;
 
 const options = {
@@ -20,7 +20,7 @@ const options = {
 
 app.get("/", async (req, res) => {
   res.json({
-    test: "Welcome to ! - See Live Web URL for this Server - https://",
+    test: "Welcome to Netflix-GPT ! - See Live Web URL for this Server - https://gpt-netflex.netlify.app/",
   });
 });
 
@@ -38,7 +38,7 @@ app.get("/now-playing", async (req, res) => {
 });
 
 app.get("/popular", async (req, res) => {
-  const url_popular= "https://api.themoviedb.org/3/movie/popular";
+  const url_popular = "https://api.themoviedb.org/3/movie/popular";
   try {
     const response = await fetch(url_popular, options);
     const data = await response.json();
@@ -62,7 +62,7 @@ app.get("/top-rated", async (req, res) => {
 });
 
 app.get("/upcoming", async (req, res) => {
-  const url_upcoming= "https://api.themoviedb.org/3/movie/upcoming";
+  const url_upcoming = "https://api.themoviedb.org/3/movie/upcoming";
   try {
     const response = await fetch(url_upcoming, options);
     const data = await response.json();
@@ -73,12 +73,26 @@ app.get("/upcoming", async (req, res) => {
   }
 });
 
-// https://tmdb-proxy-server-w1ng.onrender.com/movie?movieID=${movieId}
-app.get("/movie", async (req, res) => {
+// https://tmdb-proxy-server-w1ng.onrender.com/movieVideo?movieID=${movieId}
+app.get("/movieVideo", async (req, res) => {
   const { movieID } = req.query;
-  const url_MovieId = `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`;
+  const url_MovieVideo = `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`;
   try {
-    const response = await fetch(url_MovieId, options);
+    const response = await fetch(url_MovieVideo, options);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch data from TMDB" });
+  }
+});
+
+// https://tmdb-proxy-server-w1ng.onrender.com/movieDetail?movieID=${movieId}
+app.get("/movieDetail", async (req, res) => {
+  const { movieID } = req.query;
+  const url_MovieDetail = `https://api.themoviedb.org/3/movie/${movieID}`;
+  try {
+    const response = await fetch(url_MovieDetail, options);
     const data = await response.json();
     res.json(data);
   } catch (err) {
