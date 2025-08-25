@@ -101,7 +101,7 @@ app.get("/movieDetail", async (req, res) => {
   }
 });
 
-// https://tmdb-proxy-server-w1ng.onrender.com/similarMovies/?movieID=${movieId}
+// https://tmdb-proxy-server-w1ng.onrender.com/similarMovies?movieID=${movieId}
 app.get("/similarMovies", async (req, res) => {
   const { movieID } = req.query;
   const url_similarMovies = `https://api.themoviedb.org/3/movie/${movieID}/similar`;
